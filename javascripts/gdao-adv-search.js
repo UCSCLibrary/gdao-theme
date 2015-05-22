@@ -1,11 +1,14 @@
   /* advanced search scripts */
-  jQuery('#as-submit').click(function() {
+console.log('loading');
+jQuery(document).ready(function(){
+  jQuery('#as-submit').click(function(e) {
+	  e.preventDefault();
     $url = '/solr-search/results/index?q=';
 
     jQuery('.as-query').each(function() {
       $field = jQuery(this).find('select').val();
       $term = jQuery(this).find('input:text').val();
-
+      //      console.log('term: '+$term+' field: '+$field);
       if ($term != '') {
         if ($field != '') {
           $url += ($field + ':(' + $term + ')');
@@ -43,8 +46,9 @@
     if ($url.substr($url.length - 5) === ' AND ') {
       $url = $url.substr(0, $url.length - 5);
     }
-
-    jQuery(location).attr('href', $url);
+    //    console.log($url);
+    
+       jQuery(location).attr('href', $url);
   });
 
   jQuery("#datepicker1").datepicker({
@@ -65,3 +69,4 @@
     yearRange: "1965:1996"
   });
   /* end of advanced search scripts */
+    });

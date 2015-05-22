@@ -120,16 +120,15 @@ jQuery(document).ready(function() {
 	/* Erase the sample text in the search box when a user clicks there 
 	 * this is from: http://stackoverflow.com/questions/2544441/clearing-a-default-value-in-a-search-box-with-jquery 
 	 */
-	jQuery('').click(function(){
+	jQuery('#solrq').click(function(){
 		if(jQuery('#solrq').val() == 'Search the Collection...')
 		    jQuery('#solrq').val('');
+		else 
+		    jQuery('#solrq').val(jQuery('#solrq').val().replace(': ', ' '));
 	    });
 	jQuery('#submit_search').click(function() {
 		if(jQuery('#solrq').val() == 'Search the Collection...') {
 		    jQuery('#solrq').val('');
-		}
-		else {
-		    jQuery('#solrq').val(jQuery('#solrq').val().replace(': ', ' '));
 		}
 	    });
 

@@ -1,5 +1,4 @@
 <?php
-
 $pageTitle = __('Search Results');
 echo head(array('title' => $pageTitle, 'id' => 'items', 'bodyclass' => 'search-results'));
 ?>
@@ -33,7 +32,6 @@ echo head(array('title' => $pageTitle, 'id' => 'items', 'bodyclass' => 'search-r
 		<?php $model = $doc->__get('model'); ?>
 		<?php $record = get_record_by_id($model,$id); ?>
 		<?php $restricted = is_a($record,'Item') ? metadata($record,array('Item Type Metadata','AccessRestricted')) : false; ?>
-
 
 		<?php set_current_record($model,$record); ?>
 
@@ -197,28 +195,74 @@ echo head(array('title' => $pageTitle, 'id' => 'items', 'bodyclass' => 'search-r
         <?php endif; ?>
     </div>
 
-    <?php if(!empty($facets) && $results->response->numFound > 0): ?>
-      <?php //$query = SolrSearch_QueryHelpers::getParams(); 
-	  $query = gdao_solr_get_params();
-?>
-      <div id="gdao_solr_facets">
-        <?php echo gdao_create_sort_form(); ?>
+<?php /*
+<!-- Applied facets. -->
 
-        <h2 id="gdao_facets_label">Narrow your search</h2>
-        <div>
-        <?php foreach($results->facet_counts->facet_fields as $facet => $values): ?>
-          <h3 class="gdao_facet_label">
-        	<?php echo gdao_solr_search_element_lookup($facet); ?>
-          </h3>
-          <ul class="gdao_facet_values">
-		<?php foreach($values as $label => $count): ?>
-			<li><?php echo gdao_createFacetHtml($query, $facet, $label, $count); ?></li>
-		<?php endforeach; ?>
-          </ul>
+<div id="solr-applied-facets">
+
+  <ul>
+-->
+    <!-- Get the applied facets. -->
+<!--
+    <?php foreach (SolrSearch_Helpers_Facet::parseFacets() as $f): ?>
+      <li>
+
+        <!-- Facet label. -->
+        <?php $label = SolrSearch_Helpers_Facet::keyToLabel($f[0]); ?>
+        <span class="applied-facet-label"><?php echo $label; ?></span> >
+        <span class="applied-facet-value"><?php echo $f[1]; ?></span>
+
+        <!-- Remove link. -->
+        <?php $url = SolrSearch_Helpers_Facet::removeFacet($f[0], $f[1]); ?>
+        (<a href="<?php echo $url; ?>">remove</a>)
+
+      </li>
+    <?php endforeach; ?>
+
+  </ul>
+
+</div>
+-->
+*/ ?>
+<!-- Facets. -->
+<div id="gdao_solr_facets">
+        <?php echo gdao_create_sort_form(); ?>
+  <h2 id="gdao_facets_label" ><?php echo __('Narrow your search'); ?></h2>
+
+  <?php foreach ($results->facet_counts->facet_fields as $name => $facets): ?>
+
+    <?php /* Does the facet have any hits? */ ?>
+    <?php if (count(get_object_vars($facets))): ?>
+
+      <!-- Facet label. -->
+      <?php $label = SolrSearch_Helpers_Facet::keyToLabel($name); ?>
+<?php if(!in_array($label,array('Item Type','Creator','Coverage','YearDate'))) continue;?>
+      <h3 class="gdao_facet_label"><?php echo $label; ?></h3>
+
+      <ul class="gdao_facet_values">
+        <!-- Facets. -->
+        <?php foreach ($facets as $value => $count): ?>
+          <li class="<?php echo $value; ?>">
+
+            <!-- Facet URL. -->
+            <?php $url = SolrSearch_Helpers_Facet::addFacet($name, $value); ?>
+
+            <!-- Facet link. -->
+            <a href="<?php echo $url; ?>" class="facet-value">
+              <?php echo $value; ?>
+            </a>
+
+            <!-- Facet count. -->
+            (<span class="facet-count"><?php echo $count; ?></span>)
+
+          </li>
         <?php endforeach; ?>
-        </div>
-      </div>
+      </ul>
+
     <?php endif; ?>
+
+  <?php endforeach; ?>
+</div>
 
   </div>
 </div>

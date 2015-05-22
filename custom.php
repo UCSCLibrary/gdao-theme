@@ -1,4 +1,159 @@
 <?php
+  /*
+TEST SCRIPT
+  */
+  //
+  //           gdao_pdfify_fanzines_part_II();
+  //gdao_list_kaltura_addresses();
+function gdao_list_kaltura_addresses() {
+  $db=get_db();
+  $elementTable = $db->getTable('Element');
+  $kalturaEntryElement = $elementTable->findByElementSetNameAndElementName('Item Type Metadata','KalturaEntryID');
+
+  $kalturaEntries = $db->getTable('ElementText')->findByElement($kalturaEntryElement->id);
+  $f = fopen("/var/www/html/omeka/files/downloadKalturaMedia", "w") or die("Unable to open file!");
+  foreach($kalturaEntries as $kalturaEntry) {
+    $command = "wget http://kaltura.com/p/475671/sp/0/playManifest/entryId/".$kalturaEntry->getText()."/format/url/flavorParamId/0/".$kalturaEntry->record_id.".mp4\n";
+    fwrite($f,$command);
+  }
+  die('done');
+  }
+
+function gdao_pdfify_fanzines_part_II() {
+  $db=get_db();
+  $itemTable = $db->getTable('Item');
+  $select = $itemTable->getSelect();
+  $itemTable->filterByItemType($select,'Fanzine');
+  $fanzines = $itemTable->fetchObjects($select);
+
+  foreach($fanzines as $fanzine) {
+    set_time_limit(30);
+
+    $filename = '/gdaodata/fanzines/'.$fanzine->id.'.pdf'; 
+    if(!file_exists($filename))
+      continue;
+
+    $files = $fanzine->getFiles();
+    
+    foreach($files as $file) {
+      if(strtolower($file->getExtension())==='jpg' )
+        $file->delete();
+      if(strtolower($file->getExtension())==='pdf')
+        $file->delete();
+    }
+    insert_files_for_item($fanzine,'Filesystem',array($filename),array('ignore_invalid_files'=>true));
+  }
+  die('done');
+}
+//    gdao_pdfify_fanzines();
+function gdao_pdfify_fanzines() {
+    $db=get_db();
+  $itemType = $db->getTable('ItemType')->findByName('Fanzine');
+  $itemTable = $db->getTable('Item');
+  $select = $itemTable->getSelect();
+  $itemTable->filterByItemType($select,'Fanzine');
+  $fanzines = $itemTable->fetchObjects($select);
+  /*
+  $item_ids = array(
+		    /*		    825885,
+		    825858,
+		    825828,
+		    825814,
+		    825800,
+		    825798,
+		    825796,
+		    825795,
+		    825926*/
+  /*
+		    825804,
+		    825805,
+		    825806,
+		    825807,
+		    825808,
+		    825809,
+		    825810,
+		    825811,
+		    825813,
+		    825815,
+		    825820,
+		    825824,
+		    825825,
+		    825826,
+		    825831,
+		    825832,
+		    825833,
+		    825834,
+		    825837,
+		    825842,
+		    825843,
+		    825844,
+		    825851,
+		    825857
+		    ); 
+  */
+    $f = fopen("/var/www/html/omeka/files/copyZineImage2", "w") or die("Unable to open file!");
+  foreach($fanzines as $fanzine) {
+
+    $files = $fanzine->getFiles();
+    foreach($files as $file) {
+      if($file->getExtension()=='jpg')
+	continue;
+    }
+    
+    //    $fanzine = get_record_by_id('item',$fanzine_id);
+
+    fwrite($f,'if [ ! -d "'.$fanzine->id.'" ]; then'."\n");
+    fwrite($f,'echo "processing '.$fanzine->id.'"'."\n");
+    fwrite($f,'mkdir '.$fanzine->id."\n");
+
+    $ark = metadata($fanzine,array('Item Type Metadata','ARK'));
+
+    $arksections = explode('/',$ark);
+    $arksection = $arksections[2];
+    $findc = 'find "/gdaoimages/images/cache/pairtree_root/ar/k+/=3/83/05/=g/';
+    $findc .= substr($arksection,1,2).'/';
+    $findc .= substr($arksection,3,2).'/';
+    $findc .= substr($arksection,5,2).'/';
+    $findc .= substr($arksection,7,1).'="';
+    $findc .= ' -type f -name "*ark*" -not -name "*.dzi" -not -name "*.jpg" | while read line; do'."\n";
+    fwrite($f,$findc);
+    fwrite($f,'newname=$(basename $line)'."\n");
+    fwrite($f,'newname=${newname//\'ark+=38305=\'/\'\'}'."\n");
+    fwrite($f,'newname=${newname//\'=is=\'/\'\'}'."\n");
+    fwrite($f,'convert $line -resize 1275x -quality 75 '.$fanzine->id.'/${newname}.jpg'."\n");
+    fwrite($f,"done\n");
+    fwrite($f,"fi\n\n");
+
+    /*    foreach ($fanzine->getFiles() as $file){
+      fwrite($f,'cp /var/www/html/omeka/files/original/'.$file->filename." ".$fanzine->id."/".$file->original_filename."\n");
+      }*/
+    //    $filename = '/gdaodata/fanzines/jpgs/'.$fanzine_id.'.pdf';
+    //    insert_files_for_item($fanzine,'Filesystem',array($filename),array('ignore_invalid_files'=>false));
+    /*$fanzine = get_record_by_id("Item",$fanzine_id);
+    $commandPrefix = "convert ";
+    $command = '';
+    $commandSuffix = '/home/ethenry/fanzines/gdao_fanzine_'.$fanzine->id."_original.pdf\n";
+    $files = $fanzine->getFiles();
+    fwrite($f,'mkdir '.$fanzine_id."\n");
+    foreach($files as $file) {
+      fwrite($f, 'cp /var/www/html/omeka/files/original/'.$file->filename.' '.$fanzine_id."\n");
+    }
+    */
+    /*
+    fwrite($f,'echo "Processing item '.$fanzine->id.' original"'."\n");
+    fwrite($f,$commandPrefix.$command.$commandSuffix);
+    fwrite($f,'echo "Processing item '.$fanzine->id.' 300"'."\n");
+    //    fwrite($f,'convert -units PixelsPerInch ~/fanzines/gdao_fanzine_'.$fanzine->id."_original.pdf -density 150 ~/fanzines/gdao_fanzine_".$fanzine->id."_300.pdf\n"); 
+    fwrite($f,'gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=/home/ethenry/fanzines/gdao_fanzine_'.$fanzine->id."_ebook.pdf /home/ethenry/fanzines/gdao_fanzine_".$fanzine->id."_original.pdf\n");
+    //    fwrite($f,'echo "Processing item '.$fanzine->id.' 150"'."\n");
+    //fwrite($f,'gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=/home/ethenry/fanzines/gdao_fanzine_'.$fanzine->id."_screen.pdf /home/ethenry/fanzines/gdao_fanzine_".$fanzine->id."_original.pdf\n");
+    //   fwrite($f,'convert -units PixelsPerInch ~/fanzines/gdao_fanzine_'.$fanzine->id."_original.pdf -density 150 ~/fanzines/gdao_fanzine_".$fanzine->id."_150.pdf\n"); 
+  
+    */
+  }
+  fclose($f);
+
+}
 
   /* shortcode for including a php file
    * useful in simple pages, which no longer accept
@@ -110,7 +265,7 @@ function gdao_run_header_functions() {
     if (metadata($item, 'has thumbnail') ){
       $iLink = simplexml_load_string(item_image('square_thumbnail') ); 
       $item_image_meta .= $iLink['src'];
-      $item_description .= "GDAO Object";
+      $item_description = "GDAO Object";
     } elseif ($itemtype == 'Sound') {
       $item_image_meta .= absolute_url('/themes/gdao-theme/images/itemtype-sound.png');
       $item_description = "GDAO Sound";
@@ -277,7 +432,7 @@ function gdaoInstall()
   //$video = new ItemType();
   $video = $itemTypeTable->findByName('Moving Image');
   $video->addElements(array(
-			    $elementTable->findByElementSetNameAndElementName('Item Type Metadata','KalturaEntry'),
+			    $elementTable->findByElementSetNameAndElementName('Item Type Metadata','KalturaEntryID'),
 			    $elementTable->findByElementSetNameAndElementName('Item Type Metadata','KalturaUIConfID'),
 			    $elementTable->findByElementSetNameAndElementName('Item Type Metadata','KalturaPlayerID')
 			    ));
@@ -298,7 +453,7 @@ function gdaoInstall()
   //$story = new ItemType();
   $sound = $itemTypeTable->findByName('Sound');
   $sound->addElements(array(
-			    $elementTable->findByElementSetNameAndElementName('Item Type Metadata','KalturaEntry'),
+			    $elementTable->findByElementSetNameAndElementName('Item Type Metadata','KalturaEntryID'),
 			    $elementTable->findByElementSetNameAndElementName('Item Type Metadata','KalturaUIConfID'),
 			    $elementTable->findByElementSetNameAndElementName('Item Type Metadata','KalturaPlayerID')
 			    ));
@@ -477,15 +632,17 @@ function gdao_solr_escape($query) {
 }
 
 function gdao_create_sort_form() {
-  $uri = SolrSearch_ViewHelpers::getBaseUrl();
-  $sort = $_REQUEST['sort'];
-
+  $uri = url('solr-search');
+  $sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : '';
+  $html = '';
   $html .= '<div id="gdao_search_sort_form">';
   $html .= '<form action="' . $uri . '" method="get">';
-  $html .= '<input type="hidden" name="solrq" value="';
-  $html .= $_REQUEST['solrq'] . '" id="solrq"/>';
-  $html .= "<input type='hidden' name='solrfacet' value='";
-  $html .= $_REQUEST['solrfacet'] . "' id='solrfacet'/>";
+  $html .= '<input type="hidden" name="q" value="';
+  $html .= $_REQUEST['q'] . '" id="solrq"/>';
+  if(isset($_REQUEST['solrfacet'])){
+    $html .= "<input type='hidden' name='solrfacet' value='";
+    $html .= $_REQUEST['solrfacet'] . "' id='solrfacet'/>";
+  }
   $html .= '<span id="sort-label">';
   $html .= '<label for="sort" class="optional">Sort By</label>';
   $html .= '</span>';

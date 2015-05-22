@@ -57,7 +57,7 @@
       </p>
     </div>
     <div class="as-field">
-      <input type="button" id="as-submit" value="Submit" />
+      <input type="submit" id="as-submit" value="Submit" />
     </div>
   </div>
 </form>

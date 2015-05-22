@@ -30,10 +30,12 @@
 		<?php queue_css_file('print','print'); ?>
 		<?php queue_css_url('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" type="text/css'); ?>
 
+
 		<?php echo fire_plugin_hook('public_head'); ?>
 
 		<?php queue_js_url('https://www.google.com/jsapi'); ?>
 		<?php/* queue_js_file('form-images');*/?>
+
 		<?php queue_js_file('theme-scripts');?>
 
 		<?php //page conditional scripts
@@ -44,7 +46,7 @@
 		}else if(strpos($_SERVER['REQUEST_URI'],'milestones')) {
 			queue_js_file('neatline-customizations'); 
 			queue_css_file('timeline');
-		}else if(strpos($_SERVER['REQUEST_URI'],'advanced-search')) {
+		}else if(strpos($_SERVER['REQUEST_URI'],'advanced')) {
 			queue_js_file('gdao-adv-search');
 		}else if(strpos($_SERVER['REQUEST_URI'],'contribution')) {
 			queue_js_file('gdao-contribution');
@@ -68,7 +70,7 @@
 
 		</script>
 		<!-- End Google Analytics -->
-		
+
 	</head>
 	<body
 		<?php
@@ -127,8 +129,8 @@
 										src="/themes/gdao-theme/images/search-collection-transparent.png"
 										class="searchbox_submit" value=""/>
 								</fieldset>
-							</form>
-						</div><!-- end #searchwrapper -->
+							</form>	
+					</div><!-- end #searchwrapper -->
 						<p><a href="/advanced-search">Advanced Search</a></p>
 					</div><!--end #search-collection -->
 				</div><!--end #banner-bottom -->

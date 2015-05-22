@@ -817,6 +817,11 @@ body#items div#fields-primary .item-file {
     max-width:60%;
 }
 
+body#items div#fields-primary .application-pdf {
+    max-width:70%;
+    width:70%;
+}
+
 body#items div#fields-primary .item-file img{
     max-width:100%;
 }
@@ -841,6 +846,12 @@ body#items div.item-file div.object {
   margin: 0px auto;
   padding: 0px; 	
 }
+
+
+body#items div.application-pdf div.object {
+    width:100%;
+}
+
 
 body#items div.object div.object {
   width: 200px;

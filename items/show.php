@@ -8,9 +8,7 @@ echo head(
 ); 
 
 $curated = metadata($item,array('Item Type Metadata', 'Curated')); 
-
 ?>
-
 <div id="primary" <?php echo strcmp($curated, 'no') == 0 ? 'class="new-item"' : ''; ?>>
 	<h1><?php echo metadata($item,array('Dublin Core', 'Title')); ?></h1>
 
@@ -21,8 +19,6 @@ $curated = metadata($item,array('Item Type Metadata', 'Curated'));
 		$ark = metadata($item,array('Item Type Metadata', 'ARK')); 
 		$restricted = metadata($item,array('Item Type Metadata', 'AccessRestricted'));
 		$source = metadata($item,array('Dublin Core', 'Source'));
-
-
 
 		if ($restricted != 'true' || gdao_is_authorized()):
 
@@ -68,7 +64,7 @@ $curated = metadata($item,array('Item Type Metadata', 'Curated'));
 						  gdao_display_field($ohScene, 'What is your favorite aspect of the Dead scene?', NULL);
 						  $ohPhenom = metadata($item,array('Item Type Metadata', 'gdao-oh-phenom'));
 						  gdao_display_field($ohPhenom, 'What, if anything, do you think is important about the Dead, and about the Dead phenomenon?', NULL);
-						  if (item_has_files()): ?>
+                                 if ($item->fileCount()>0): ?>
 				<div id="item-files" class="item-field">
 					<h3><?php echo __('Files'); ?></h3>
 					<div><?php echo files_for_item(array('imageSize'=>'fullsize')); ?></div>
@@ -76,7 +72,7 @@ $curated = metadata($item,array('Item Type Metadata', 'Curated'));
 				       endif; 
 				       ?></div><?php
 
-					       elseif ($itemtype == 'Article' && empty($ark) && item_has_files()): 
+					       elseif ($itemtype == 'Article' && empty($ark) && $item->fileCount()>0): 
 					       ?>
 				<div id="item-files" class="item-field">
 					<h3><?php echo __('Files'); ?></h3>
@@ -87,7 +83,7 @@ $curated = metadata($item,array('Item Type Metadata', 'Curated'));
 	       elseif (!empty($ark)): 
 	       //	       echo metadata($item,array('Item Type Metadata', 'StructMap'));
 	       echo files_for_item(array('imageSize'=>'fullsize'));
-               elseif (item_has_files()): ?>
+               elseif ($item->fileCount()>0): ?>
 				<div id="item-files" class="item-field">
 					<?php if ($itemtype == 'Video' || $itemtype == 'Audio'): ?>
 						<h3><?php echo __('Files'); ?></h3>

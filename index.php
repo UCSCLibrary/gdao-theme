@@ -15,7 +15,7 @@
 	<div class="content"><!-- begin #primary .content -->
 
 		<div class="three-1">
-			<h2>What\'s New</h2>
+			<h2>What's New</h2>
 			<?php 
 			//$recentItems = get_db()->getTable('Item')->findBy(array('recent'=>true,'collection'=>'Grateful Dead Archive'), 3); 
 			$recentItems = get_recent_items(3);
