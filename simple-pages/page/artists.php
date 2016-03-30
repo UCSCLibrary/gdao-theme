@@ -12,8 +12,13 @@
 		<div class="artists-browse">
 			<div>
 				<h3>
-					<a href="/solr-search/results/index?q=39_s:' . gdao_solr_escape($name) . '"<?php echo htmlspecialchars($name);?></a>
-					<span class="count"<?php echo $count;?>)</span>
+						<a href="/solr-search/results/index?q=39_s:<?php echo gdao_solr_escape($name);?>">
+							<?php echo htmlspecialchars($name);?>
+						</a> 
+
+						<span class="count">
+							(<?php echo $count;?>)
+						</span>
 				</h3>
 			</div>
 			<div>
@@ -29,7 +34,7 @@
 	<?php endforeach; ?>
 	
 	<p class="browse-more">
-		<a href="/solr-search/results/index?solrq=<?php echo urlencode(gdao_get_photographer_search());?>" class="more">
+		<a href="/solr-search/results/index?q=<?php echo urlencode(gdao_get_photographer_search());?>" class="more">
 			View More Photographers
 		</a>
 	</p>
@@ -70,6 +75,6 @@
 	<?php endforeach;?>
 
 	<p class="browse-more">
-		<a href="/solr-search/results/index?solrq=<?php echo urlencode(gdao_get_poster_artist_search());?>" class="more">View More Poster Artists</a>
+		<a href="/solr-search/results/index?q=<?php echo urlencode(gdao_get_poster_artist_search());?>" class="more">View More Poster Artists</a>
 	</p>
 </div>

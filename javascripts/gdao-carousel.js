@@ -22,16 +22,18 @@ jQuery(document).ready(function() {
 	    letter = "&letter="+letter;
 	else
 	    letter = "";
-	var url='/ajax?offset=';
-	var offset=0;
+	var url='/gdao-helper/Envelope/get?offset=';
+
+	var offset= carousel_offset ? carousel_offset : 0;
+
 	jQuery('#fancarousel > a.next').click(function(){
 		jQuery(this).css('cursor','wait');
 		offset += 6;
 		jQuery.get(url+offset+letter,function(data){
-			jQuery('#fancarousel ul').hide("slide", { direction: "left" }, 600,function(){
+						jQuery('#fancarousel ul').hide("slide", { direction: "left" }, 600,function(){
 				jQuery(this).remove();
 				jQuery('#fancarousel').append('<ul style="display:none">'+data+'</ul>');
-				jQuery('#fancarousel ul').show("slide", { direction: "right" }, 600);
+								jQuery('#fancarousel ul').show("slide", { direction: "right" }, 600);
 				jQuery('#fancarousel > a.next').css('cursor','pointer');
 			    });
 		    });
@@ -41,9 +43,8 @@ jQuery(document).ready(function() {
 	jQuery('#fancarousel > a.prev').click(function(){
 		jQuery(this).css('cursor','wait');
 		offset -= 6;
-		$offset = $offset > 0 ? $offset : 0;
-		$letter = 
-		jQuery.get(url+offset,function(data){
+		offset = offset > 0 ? offset : 0;
+		jQuery.get(url+offset+letter,function(data){
 			jQuery('#fancarousel ul').hide("slide", { direction: "right" }, 600,function(){
 				jQuery(this).remove();
 				jQuery('#fancarousel').append('<ul style="display:none">'+data+'</ul>');

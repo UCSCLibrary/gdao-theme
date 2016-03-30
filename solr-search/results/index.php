@@ -120,11 +120,7 @@ echo head(array('title' => $pageTitle, 'id' => 'items', 'bodyclass' => 'search-r
 		<?php elseif (is_a($record,'Item') && metadata($record,'has_files')): ?>
                 <?php /* foreach(loop($files) as $file):*/ ?>
 	                	<div class="thumbnail_image">
-<?php echo link_to_item(item_image('square_thumbnail')); ?>
-                    		<?php $uri = html_escape(WEB_ROOT) . '/items/show/'; ?>
-                    		<a href="<?php echo $uri . $id; ?>" alt="Item record">
-                      			<img src="<?php echo $thumb_path; ?>" alt="<?php echo $title; ?>"/>
-                    		</a>
+                                  <?php echo link_to_item(item_image('square_thumbnail')); ?>
         		</div>
 		<?php /* endforeach;*/ ?>
 
@@ -143,7 +139,7 @@ echo head(array('title' => $pageTitle, 'id' => 'items', 'bodyclass' => 'search-r
           		</h3>
 
 			<?php $creators = $doc->__get('39_s'); ?>
-			<?php $uri = html_escape(WEB_ROOT) . '/solr-search/results/index?solrq=39_s:'; ?>
+			<?php $uri = html_escape(WEB_ROOT) . '/solr-search/results/index?q=39_s:'; ?>
 			<?php if (!empty($creators) && is_array($creators)): ?>
 			<h4>Creators:</h4>
          		<ul class="gdao_search_item_creators">
@@ -165,7 +161,7 @@ echo head(array('title' => $pageTitle, 'id' => 'items', 'bodyclass' => 'search-r
 			<?php endif; ?>
 
 			<?php $shows = $doc->__get('38_s'); ?>
-			<?php $uri = html_escape(WEB_ROOT) . '/solr-search/results/index?solrq=38_s:'; ?>
+			<?php $uri = html_escape(WEB_ROOT) . '/solr-search/results/index?q=38_s:'; ?>
 
 			<?php if (!empty($shows) && is_array($shows)): ?>
 			<h4>Related shows:</h4>
@@ -191,9 +187,46 @@ echo head(array('title' => $pageTitle, 'id' => 'items', 'bodyclass' => 'search-r
 		</div>
 		</div>
     	<?php endforeach; ?>
+
     	<?php echo pagination_links(); ?>
         <?php endif; ?>
     </div>
+
+
+<!-- 
+TEST
+<?php 
+if (Zend_Registry::isRegistered('pagination')) {
+        // If the pagination variables are registered, set them for local use.
+        $p = Zend_Registry::get('pagination');
+    } else {
+        // If the pagination variables are not registered, set required defaults
+        // arbitrarily to avoid errors.
+        $p = array('total_results' => 1, 'page' => 1, 'per_page' => 1);
+    }
+    // Set preferred settings.
+    $scrollingStyle = isset($options['scrolling_style']) ? $options['scrolling_style'] : 'Sliding';
+    $partial = isset($options['partial_file']) ? $options['partial_file'] : 'common/pagination_control.php';
+    $pageRange = isset($options['page_range']) ? (int) $options['page_range'] : 5;
+    $totalCount = isset($options['total_results']) ? (int) $options['total_results'] : (int) $p['total_results'];
+    $pageNumber = isset($options['page']) ? (int) $options['page'] : (int) $p['page'];
+    $itemCountPerPage = isset($options['per_page']) ? (int) $options['per_page'] : (int) $p['per_page'];
+    // Create an instance of Zend_Paginator.
+    $paginator = Zend_Paginator::factory($totalCount);
+    // Configure the instance.
+    $paginator->setCurrentPageNumber($pageNumber)
+              ->setItemCountPerPage($itemCountPerPage)
+              ->setPageRange($pageRange);
+
+echo('<pre>');
+print_r($paginator);
+echo('</pre>');
+
+
+
+?>
+ -->
+
 
 <?php /*
 <!-- Applied facets. -->
@@ -236,16 +269,18 @@ echo head(array('title' => $pageTitle, 'id' => 'items', 'bodyclass' => 'search-r
 
       <!-- Facet label. -->
       <?php $label = SolrSearch_Helpers_Facet::keyToLabel($name); ?>
-<?php if(!in_array($label,array('Item Type','Creator','Coverage','YearDate'))) continue;?>
-      <h3 class="gdao_facet_label"><?php echo $label; ?></h3>
-
+<?php if(!in_array($label,array('Item Type','Creator','Spatial Coverage','YearDate'))) continue;?>
+<?php if($label==='Spatial Coverage')$label = 'Venue';?>
+<?php if($label==='YearDate')$label = 'Year';?>
+      
+     <h3 class="gdao_facet_label"><?php echo $label; ?></h3>
       <ul class="gdao_facet_values">
         <!-- Facets. -->
         <?php foreach ($facets as $value => $count): ?>
           <li class="<?php echo $value; ?>">
 
             <!-- Facet URL. -->
-            <?php $url = SolrSearch_Helpers_Facet::addFacet($name, $value); ?>
+            <?php $url = SolrSearch_Helpers_Facet::addFacet($name, gdao_escapeSolrValue($value)); ?>
 
             <!-- Facet link. -->
             <a href="<?php echo $url; ?>" class="facet-value">

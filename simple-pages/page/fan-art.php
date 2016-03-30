@@ -1,8 +1,13 @@
 <?php
 $offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
+
+
 $result = gdao_get_fanart($offset);
 $i=0;
 ?>
+<script>
+ var carousel_offset = <?php echo $offset; ?>
+</script>
 <div id="fancarousel">
 	<a class="next"></a>
 	<a class="prev"></a>
@@ -42,6 +47,6 @@ $i=0;
 	<a href="fan-art?letter=W">[W]</a>&nbsp;
 	<a href="fan-art?letter=X">[X]</a>&nbsp; 
 	<a href="fan-art?letter=Y">[Y]</a>&nbsp; 
-	<a href="fan-art?letter=Z">[Z]</a>&nbsp; 
+	<A href="fan-art?letter=Z">[Z]</a>&nbsp; 
 	<a href="fan-art">[ALL]</a>
 </div>

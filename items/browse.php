@@ -4,17 +4,17 @@
 
   <h1>Browse Items (<?php echo total_records('Item'); ?> total)</h1>
 
-  <ul class="items-nav navigation" id="secondary-nav">
-    <!--  -->
-    <?php
+  <?php
 //echo nav(array('Browse All' => url('items'), 'Browse by Tag' => url('items/tags'))); 
-        echo nav(
-            array(
-                array('label'=>'Browse by Tag','uri' => url('items/tags'))
-            )
-        ); 
-?>
-  </ul>
+    $secNav = nav(
+        array(
+            array('label'=>'Browse by Tag','uri' => url('items/tags'))
+        )
+    );
+    $secNav->setUlId('secondary-nav');
+    $secNav->setUlClass('items-nav navigation');
+    echo $secNav;
+  ?>
 
   <div id="pagination-top" class="pagination"><?php echo pagination_links(); ?></div>
   <?php foreach (loop('items') as $item): ?>

@@ -16,17 +16,17 @@ jQuery(document).ready(function(){
         else {
           $url += ('(' + $term + ')');
         }
-
-        $url += ' AND ';
+        $url += '+AND+';
       }
     });
 
+    $url = $url.substr(0, $url.length - 5);
     $itemtype = jQuery('#item-type').val();
 
     if ($itemtype != '') {
-      $url += ('itemtype:%22' + $itemtype + '%22 AND ');
+      $url += ('&facet=itemtype:%22' + $itemtype + '%22');
     }
-
+/*
     $date1 = jQuery("#datepicker1").val();
     $date2 = jQuery("#datepicker2").val();
 
@@ -42,31 +42,32 @@ jQuery(document).ready(function(){
     else {
       $url += ('40_s:[' + $date1 + 'T00:00:00.000Z TO ' + $date2 + 'T00:00:00.000Z]');
     }
-
-    if ($url.substr($url.length - 5) === ' AND ') {
+*/
+    if ($url.substr($url.length - 5) === '+AND+') {
       $url = $url.substr(0, $url.length - 5);
     }
     //    console.log($url);
     
        jQuery(location).attr('href', $url);
   });
-
+/*
   jQuery("#datepicker1").datepicker({
     dateFormat: "yy-mm-dd",
     changeMonth: true,
     changeYear: true,
-    minDate: "1965-01-01",
-    maxDate: "1996-01-01",
-    yearRange: "1965:1996"
+//    minDate: "1965-01-01",
+ //   maxDate: "1996-01-01",
+//    yearRange: "1965:1996"
   });
 
   jQuery("#datepicker2").datepicker({
     dateFormat: "yy-mm-dd",
     changeMonth: true,
     changeYear: true,
-    minDate: "1965-01-01",
-    maxDate: "1996-01-01",
-    yearRange: "1965:1996"
+//    minDate: "1965-01-01",
+//    maxDate: "1996-01-01",
+//    yearRange: "1965:1996"
   });
+*/
   /* end of advanced search scripts */
     });

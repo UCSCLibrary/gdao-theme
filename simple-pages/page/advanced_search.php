@@ -25,10 +25,12 @@
         <option value="s">Subject</option>
       </select> for <input type="text" name="as-3-val" value="" />
     </div>
+<!--     
     <div class="as-field" id="date-limit">
       <span class="as-label">Limit your search by date: </span>
       <p>From <input type="text" id="datepicker1"/> to <input type="text" id="datepicker2"/></p>
     </div>
+-->
     <div class="as-field" id="type-limit">
       <span class="as-label">Limit your search by item format: </span>
       <p>
@@ -41,7 +43,7 @@
           <option value="Fan Art">Fan Art</option>
           <option value="Fan Tape">Fan Tape</option>
           <option value="Fanzine">Fanzine</option>
-          <option value="Image">Image</option>
+          <option value="Image"">Image</option>
           <option value="Laminate">Laminate</option>
           <option value="Newsletter">Newsletter</option>
           <option value="Notebook">Notebook</option>

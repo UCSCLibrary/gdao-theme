@@ -77,16 +77,16 @@ $source = metadata($item, array('Dublin Core', 'Source')); ?>
 
 		<div class="item-fields">
 			<?php $creators = metadata($item, array('Dublin Core', 'Creator'), array('all'=>true)); ?>
-			<?php gdao_display_field($creators, 'Creator', '/solr-search/results/index?solrq=39_s:'); ?>
+			<?php gdao_display_field($creators, 'Creator', '/solr-search/results/index?q=39_s:'); ?>
 
 			<?php $dates = metadata($item, array('Dublin Core', 'Date'), array('all'=>true)); ?>
-			<?php gdao_display_field($dates, 'Date', '/solr-search/results/index?solrq=40_s:'); ?>
+			<?php gdao_display_field($dates, 'Date', '/solr-search/results/index?q=40_s:'); ?>
 
 			<?php $coverages = metadata($item, array('Dublin Core', 'Coverage'), array('all'=>true)); ?>
-			<?php gdao_display_field($coverages, 'Related Show', '/solr-search/results/index?solrq=38_s:'); ?>
+			<?php gdao_display_field($coverages, 'Related Show', '/solr-search/results/index?q=38_s:'); ?>
 
 			<?php $subjects = metadata($item, array('Item Type Metadata', 'AllSubjects'), array('all'=>true)); ?>
-			<?php gdao_display_field($subjects, 'Subject', '/solr-search/results/index?solrq=260_s:'); ?>
+			<?php gdao_display_field($subjects, 'Subject', '/solr-search/results/index?q=260_s:'); ?>
 
 			<?php if ($itemtype != 'Website'): ?>
 				<?php $urls = metadata($item, array('Item Type Metadata', 'URL'), array('all'=>true)); ?>
@@ -123,10 +123,10 @@ $source = metadata($item, array('Dublin Core', 'Source')); ?>
 		<?php endif; ?>
 
 		<?php $publishers = metadata($item, array('Dublin Core', 'Publisher'), array('all'=>true)); ?>
-		<?php gdao_display_field($publishers, 'Publisher/Printer', '/solr-search/results/index?solrq=45_s:'); ?>
+		<?php gdao_display_field($publishers, 'Publisher/Printer', '/solr-search/results/index?q=45_s:'); ?>
 
 		<?php $promoters = metadata($item, array('Item Type Metadata', 'Promoter'), array('all'=>true)); ?>
-		<?php gdao_display_field($promoters, 'Promoter', '/solr-search/results/index?solrq=141_s:'); ?>
+		<?php gdao_display_field($promoters, 'Promoter', '/solr-search/results/index?q=141_s:'); ?>
 
 		<?php if ($itemtype != 'Website'): ?>
 			<?php $description = metadata($item, array('Dublin Core', 'Description'), array('all'=>true)); ?>
@@ -134,19 +134,23 @@ $source = metadata($item, array('Dublin Core', 'Source')); ?>
 		<?php endif; ?>
 
 		<?php $series = metadata($item, array('Dublin Core', 'Is Part Of'), array('all'=>true)); ?>
-		<?php gdao_display_field($series, 'Collection Title', '/solr-search/results/index?solrq=114_s:'); ?>
+		<?php gdao_display_field($series, 'Collection Title', '/solr-search/results/index?q=114_s:'); ?>
 
 		<?php $formats = metadata($item, array('Dublin Core', 'Format'), array('all'=>true)); ?>
-		<?php gdao_display_field($formats, 'Format', '/solr-search/results/index?solrq=42_s:'); ?>
+		<?php gdao_display_field($formats, 'Format', '/solr-search/results/index?q=42_s:'); ?>
 
 		<?php $extents = metadata($item, array('Dublin Core', 'Extent')); ?>
 		<?php gdao_display_field($extents, 'Extent', NULL); ?>
 
-		<?php $languages = metadata($item, array('Dublin Core', 'Language')); ?>
-		<?php gdao_display_field($languages, 'Language', '/solr-search/results/index?solrq=44_s:'); ?>
+		<?php 
+//$languages = metadata($item, array('Dublin Core', 'Language')); 
+                ?>
+		<?php 
+                //gdao_display_field($languages, 'Language', '/solr-search/results/index?q=44_s:'); 
+                ?>
 
 		<?php $types = metadata($item, array('Dublin Core', 'Type')); ?>
-		<?php gdao_display_field($types, 'Type', '/solr-search/results/index?solrq=51_s:'); ?>
+		<?php gdao_display_field($types, 'Type', '/solr-search/results/index?q=51_s:'); ?>
 
 		<?php $relatedResources = metadata($item, array('Dublin Core', 'Relation'), array('all'=>true)); ?>
 		<?php gdao_display_field($relatedResources, 'Related Resource', NULL); ?>

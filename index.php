@@ -18,7 +18,7 @@
 			<h2>What's New</h2>
 			<?php 
 			//$recentItems = get_db()->getTable('Item')->findBy(array('recent'=>true,'collection'=>'Grateful Dead Archive'), 3); 
-			$recentItems = get_recent_items(3);
+			$recentItems = get_recent_items(1);
 			set_loop_records('items',$recentItems);
 			if (has_loop_records('items')): ?>
 			
@@ -100,7 +100,7 @@
 		<div class="three-2">
 			<h2>Upload Media</h2>
 			<p id="contrib-text">Help build GDAO: a socially-constructed archive. Please share your photos and recordings to make this archive as deep an expression of dead culture as possible.</p>
-			<p class="contribute"><a href="/contribution">Contribute</a>
+			<p class="contribute"><a href="/contribution">Upload</a>
 		</div>
 		<div class="three-3">
 			<h2>Gdao on Facebook</h2>

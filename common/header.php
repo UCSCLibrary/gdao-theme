@@ -82,8 +82,7 @@
 			<div class="content"><!--begin #banner .content -->
 				<h1><?php echo link_to_home_page(); ?></h1>
 				<div id="banner-top"><!--begin #banner-top -->
-					<ul id="nav-site">
-						<?php echo nav(
+						<?php $navSite = nav(
 							array(
 								array('label'=>'home','uri' => url('/')),
 								array('label'=>'about','uri' => url('about')),
@@ -92,48 +91,57 @@
 								array('label'=> 'help','uri' => url('help'))
 							)
 						);
+                                                $navSite->setUlId('nav-site');
+                                                echo $navSite;
 						?>
-					</ul>
-					<ul id="nav-contribute">
-						<?php echo nav(
-							array(
-								array('label'=>'Add Content','uri' => url('contribution'))
-							)
-						);
-						?>
-					</ul>
+                                        <?php 
+                                        if(current_user()){ 
+                                        ?>
+					  <div id="nav-logout">
+					    <a href="/users/logout">
+                                              logout
+                                            </a>
+					  </div>
+                                        <?php } 
+                                        $navContribute = nav(
+					    array(
+						array('label'=>'Add Content','uri' => url('contribution'))));
+                                        $navContribute->setUlId('nav-contribute');
+                                        echo $navContribute;
+					?>
 				</div><!--end #banner-top -->
 				<div id="banner-bottom"><!--begin #banner-bottom -->
-					<ul id="nav-collection">
-						<?php echo nav(
-							array(
-								array('label'=>'Shows','uri' => url('shows')),
-								array('label'=>'Milestones','uri' => url('milestones')),
-								array('label'=>'Artists','uri' => url('artists')),
-								array('label'=>'Media','uri' => url('media')),
-								array('label'=>'Fan Art','uri' => url('fan-art'))
-							)
-						);
-						?>
-					</ul>
 
-					<div id="search-collection"><!--begin #search-collection -->
-						<div id="searchwrapper"><!--begin #searchwrapper -->
-							<form id="simple-search" action="/solr-search/results/index?" method="get">
-								<fieldset>
-									<?php $solrq = (isset($_REQUEST['solrq'])?$_REQUEST['solrq']:null); ?>
-									<input type="text" name="q" id="solrq" value='<?php
-														      echo empty($solrq) ? 'Search the Collection...' : $solrq;
-														      ?>' class="searchbox default-value"/>
-									<input type="image" name="submit_search" id="submit_search"
-										src="/themes/gdao-theme/images/search-collection-transparent.png"
-										class="searchbox_submit" value=""/>
-								</fieldset>
-							</form>	
-					</div><!-- end #searchwrapper -->
-						<p><a href="/advanced-search">Advanced Search</a></p>
-					</div><!--end #search-collection -->
+				  <?php $nav = nav(
+				      array(
+					  array('label'=>'Shows','uri' => url('shows')),
+					  array('label'=>'Milestones','uri' => url('milestones')),
+					  array('label'=>'Artists','uri' => url('artists')),
+					  array('label'=>'Media','uri' => url('media')),
+					  array('label'=>'Fan Art','uri' => url('fan-art'))),'nav-collection');
+                                  $nav->setUlId('nav-collection');
+                                  echo $nav;
+				  ?>
+                                  
+                                  
+				  <div id="search-collection"><!--begin #search-collection -->
+				    <div id="searchwrapper"><!--begin #searchwrapper -->
+				      <form id="simple-search" action="/solr-search/results/index?" method="get">
+					<fieldset>
+					  <?php $solrq = (isset($_REQUEST['solrq'])?$_REQUEST['solrq']:null); ?>
+					  <input type="text" name="q" id="solrq" value='<?php
+											echo empty($solrq) ? 'Search the Collection...' : $solrq;
+											?>' class="searchbox default-value"/>
+					  <input type="image" name="submit_search" id="submit_search"
+						 src="/themes/gdao-theme/images/search-collection-transparent.png"
+						 class="searchbox_submit" value=""/>
+					</fieldset>
+				      </form>	
+				    </div><!-- end #searchwrapper -->
+				    <p><a href="/advanced-search">Advanced Search</a></p>
+				  </div><!--end #search-collection -->
 				</div><!--end #banner-bottom -->
 			</div><!-- end #banner .content -->
 		</div><!--end #banner -->
 		<div id="main">
+                  
