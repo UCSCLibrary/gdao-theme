@@ -630,13 +630,15 @@ function gdao_escapeSolrValue($string)
 }
 
 function gdao_create_sort_form() {
+    return '';
+
     $uri = url('solr-search');
     $sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : '';
 
     $html = '';
     ob_start();
 ?>
-<?php /*  <div id="gdao_search_sort_form">
+  <div id="gdao_search_sort_form">
     <form action="<?php echo $uri;?>" method="get">
       <?php if(isset($_REQUEST['q'])) { ?>
         <input type="hidden" name="q" value="<?php echo $_REQUEST['q'] ?>" id="solrq"/>
@@ -662,7 +664,6 @@ function gdao_create_sort_form() {
       <input type="submit" name="submit" id="submit" value="Go"/>
     </form>
   </div> 
-*/ ?>
   <?php  
   return ob_get_clean();
   }
