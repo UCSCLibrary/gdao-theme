@@ -10,7 +10,7 @@ echo head(
     ));
 ?>
 <div id="primary">
-  <h1><?php echo $title; ?> 
+  <h1><?php echo $title; ?> </h1>
     <form action="/users/login" method="post" enctype="application/x-www-form-urlencoded" id="login-form">
       <fieldset id="fieldset-login">
         <div class="field">
@@ -44,3 +44,6 @@ echo head(
     </form>
 </div>
 
+<?php
+echo foot(); 
+?>
