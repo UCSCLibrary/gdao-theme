@@ -222,8 +222,6 @@ echo('<pre>');
 print_r($paginator);
 echo('</pre>');
 
-
-
 ?>
  -->
 
