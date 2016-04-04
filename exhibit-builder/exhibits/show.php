@@ -7,7 +7,6 @@ echo head(array(
 <div id="primary">
 	<h1><?php echo link_to_exhibit(); ?></h1>
 
-
 	<?php $childPages =  $exhibit_page->getChildPages();?>
 	<?php $exhibit_page =  ($exhibit_page->parent_id) ? $exhibit_page : $childPages[0];?>
 
