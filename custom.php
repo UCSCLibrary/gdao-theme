@@ -636,7 +636,7 @@ function gdao_create_sort_form() {
     $html = '';
     ob_start();
 ?>
-  <div id="gdao_search_sort_form">
+<?php /*  <div id="gdao_search_sort_form">
     <form action="<?php echo $uri;?>" method="get">
       <?php if(isset($_REQUEST['q'])) { ?>
         <input type="hidden" name="q" value="<?php echo $_REQUEST['q'] ?>" id="solrq"/>
@@ -661,7 +661,8 @@ function gdao_create_sort_form() {
       
       <input type="submit" name="submit" id="submit" value="Go"/>
     </form>
-  </div>
+  </div> 
+*/ ?>
   <?php  
   return ob_get_clean();
   }
