@@ -7,8 +7,6 @@
 	<ul class="exhibit-section-nav">
 		<?php set_exhibit_pages_for_loop_by_exhibit($exhibit); ?>
 		<?php foreach (loop('exhibit_page') as $exhibitPage): ?>
-			<?php $childPages = $exhibitPage->getChildPages();?>
-			<?php $exhibitPage = $childPages[0]; ?>
 			<li>
 				<a class="exhibit-section-title" href="<?php echo $exhibitPage->getRecordUrl();?>">
 					<?php echo $exhibitPage->title;?>
