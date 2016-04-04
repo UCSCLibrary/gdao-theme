@@ -46,12 +46,26 @@ ul.pagination li input {
 
 /* begin general layout styles */
 
-.content, #primary { 
+.content, #primary, body.login #main p, body.login #main form, body.login #main h1 { 
     width: 940px; 
     margin: 0 auto;
     padding: 10px;
     clear:both;
     overflow: hidden; 
+}
+
+body.login #main h1 { 
+	font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Gill Sans", sans-serif;
+    font-size: 35px;
+    letter-spacing: .05em;
+    color: #929292;
+    border-bottom: 1px solid #dadada;
+    padding: 40px 0 3px 0;
+    margin-bottom: 20px;
+}
+
+body.login #main form input {
+	margin-bottom: 25px;	
 }
 
 #banner-home .content {
@@ -455,37 +469,37 @@ ul#nav-contribute {
     clear: right;
 }
 
-ul#nav-collection {
+#banner-bottom ul#nav-collection {
     float: left;
     text-transform: uppercase;
     margin: 0px;
     padding: 0px;
 }
 
-ul#nav-collection a:link {
+#banner-bottom ul#nav-collection a:link {
     color: #fff;
 }
 
-ul#nav-collection a:visited {
+#banner-bottom ul#nav-collection a:visited {
     color: #fff;
 }
 
-ul#nav-collection a:hover {
+#banner-bottom ul#nav-collection a:hover {
     color: #fff;
 }
 
-ul#nav-collection li {
+#banner-bottom ul#nav-collection li {
     margin-right:5px;
     padding-right:10px;
     margin-left:5px;
     padding-left:10px;
 }
 
-ul#nav-collection li:hover {
+#banner-bottom ul#nav-collection li:hover {
     background-color: #4e4e4f;
 }
 
-ul#nav-collection li.active, body.timelines li.nav-milestones {
+#banner-bottom ul#nav-collection li.active, body.timelines li.nav-milestones {
     background-color: #5f5f60;
 }
 
@@ -859,7 +873,6 @@ body#items div.main_image img, div#zoom_image canvas {
 }
 
 body#items div#fields-primary {
-    position:relative;  
     overflow: hidden;
     padding-bottom: 22px;
     margin-bottom: 22px;
@@ -869,17 +882,13 @@ body#items div#fields-primary {
 body#items div#fields-primary .item-file {
     float:left;
     max-width:60%;
+    padding-bottom: 15px;
 }
 
 body#items div#fields-primary .application-pdf {
     max-width:70%;
     width:70%;
 }
-
-body#items div#fields-primary .item-file img{
-    max-width:100%;
-}
-
 
 body#items div#images_wrapper, body#items div.iframe, body#items div.object, body#items div#primary div.url, body#items div#primary div.oral-history, body#items div#fields-primary div#item-files, body#items div#fields-primary div#restricted-item {
     width: 640px;
@@ -967,6 +976,7 @@ body#items div#primary div.url a, body#items div#primary div#item-citation { /*u
     word-wrap: break-word;      /* IE 5+ */
 }
 
+
 body#items div#fields-primary div.item-fields {
     width: 218px;
     float: right;
@@ -974,10 +984,6 @@ body#items div#fields-primary div.item-fields {
     border-left: 1px solid #ddd;
 }
 
-body#items div#fields-primary div.item-fields {
-//      position:absolute;
-//      right:0;
-}
 
 body#items div.thumbnail_image {
     width: 153px;
@@ -1108,11 +1114,12 @@ p#click-to-access {
 body#exhibit ul.exhibit-section-nav {
     border-bottom: 1px solid #dadada;
     margin-bottom: 20px;
+    padding-left:10px;
 }
 
 body#exhibit ul.exhibit-section-nav li {
     display: inline;	
-    margin: 10px;
+    margin: 10px 20px 10px 0;
 }
 
 body#exhibit ul.exhibit-section-nav li a {
@@ -1726,7 +1733,7 @@ body#copyright-owners #primary div.copyright-owner {
         padding-top: 50px;
     }
 
-    ul#nav-collection {
+    #banner-bottom ul#nav-collection {
         float: right;
     }
 
@@ -1856,6 +1863,10 @@ body#copyright-owners #primary div.copyright-owner {
         padding-left: 300px;
     }
 
+    body#items div#fields-primary {
+        display:table;
+    }
+
     body#items div#images_wrapper, body#items div.iframe, body#items div.object, body#items div#primary div.url, body#items div#primary div.oral-history, body#items div#fields-primary div#item-files, body#items div#fields-primary div#restricted-item {
         float: none;
         margin-right: 0px;
@@ -1868,7 +1879,7 @@ body#copyright-owners #primary div.copyright-owner {
         border-left: none;
         float: none;
         padding-left: 0px;
-        width: 594px;
+        display: table-footer-group
     }
 
 }
@@ -1908,12 +1919,17 @@ body#copyright-owners #primary div.copyright-owner {
 
     #banner-top {
         clear: both;
+        display:table;
+        height:115px;
+        margin-left:auto;
+        margin-right:auto;
     }
 
     #banner-top > div {
         text-align:center;
         float:none;
     }
+
 
     #banner-top ul#nav-site li.current a {
         background-image: none;
@@ -1930,17 +1946,24 @@ body#copyright-owners #primary div.copyright-owner {
         position:static;
         display: block;
         margin-left: 10px;
-        margin-top: 25px;
         float: none;
         text-align: center;
         padding: 7px 0px 15px 0px;
     }
 
     #banner-bottom {
-        padding-top: 32px;
+        padding-top: 15px;
     }
 
-    ul#nav-collection {
+    div#banner-top div#nav-logout{
+        display:table-footer-group
+        text-align:center;
+        float:left;
+        margin-left:30px;
+
+    }
+
+    #banner-bottom ul#nav-collection {
         display: block;
         float: none;
         text-align: center;
