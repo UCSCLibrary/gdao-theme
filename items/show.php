@@ -2,6 +2,9 @@
 
 $filesForItem =  files_for_item(array('imageSize'=>'fullsize',
                                       'linkToFile'=>false));
+
+$itemtype = $item->getItemType()->name;
+
 echo head(
     array(
 	'title' => metadata($item,array('Dublin Core', 'Title')),
@@ -16,140 +19,127 @@ $curated = metadata($item,array('Item Type Metadata', 'Curated'));
   <h1><?php echo metadata($item,array('Dublin Core', 'Title')); ?></h1>
 
   <div id="fields-primary">
+
+
+	    <div class="item-fields">
+              
+	      <?php $creators = metadata($item,array('Dublin Core', 'Creator'), array('all'=>true)); ?>
+	      <?php gdao_display_field($creators, 'Creator', '/solr-search/results/index?q=39_s:'); ?>
+              
+	      <?php $dates = metadata($item,array('Dublin Core', 'Date'), array('all'=>true)); ?>
+	      <?php gdao_display_field($dates, 'Date', '/solr-search/results/index?q=40_s:'); ?>
+
+	      <?php $coverages = metadata($item,array('Dublin Core', 'Coverage'), array('all'=>true)); ?>
+	      <?php gdao_display_field($coverages, 'Related Show', '/solr-search/results/index?q=38_s:'); ?>
+
+	      <?php $subjects = metadata($item,array('Item Type Metadata', 'AllSubjects'), array('all'=>true)); ?>
+	      <?php gdao_display_field($subjects, 'Subject', '/solr-search/results/index?q=260_s:'); ?>
+
+	      <?php if ($item->itemtype != 'Website') { ?>
+		<?php $urls = metadata($item,array('Item Type Metadata', 'URL'), array('all'=>true)); ?>
+		<?php gdao_display_field($urls, 'URL', ''); ?>
+	      <?php } ?>
+
+	      <div id="item-citation" class="item-field citation">
+		<h3>Citation:</h3>
+		<p id="citation"><?php echo metadata($item, 'citation', array('no_escape' => true)); ?></p>
+	      </div>
+
+	      <!-- AddThis Button BEGIN -->
+	      <div class="addthis_toolbox addthis_default_style item-field social-links">
+		<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+		<a class="addthis_button_tweet"></a>
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		<a class="addthis_counter addthis_pill_style"></a>
+	      </div>
+	      <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fcd594c19cdb40c"></script>
+	      <!-- AddThis Button END -->
+
+	    </div>
+
+
     <?php
     $itemtype = metadata($item,'item type name');
     $ark = metadata($item,array('Item Type Metadata', 'ARK')); 
     $restricted = metadata($item,array('Item Type Metadata', 'AccessRestricted'));
     $source = metadata($item,array('Dublin Core', 'Source'));
 
-    if ($restricted != 'true' || gdao_is_authorized()):
+    if ($restricted != 'true' || gdao_is_authorized()) {
+        if($itemtype == 'Copyright Clearance') {
+	    $firstName = metadata($item,array('Item Type Metadata', 'FirstName'), array('all'=>true)); 
+            gdao_display_field($firstName, 'First Name', ''); 
+            $lastName = metadata($item,array('Item Type Metadata', 'LastName'), array('all'=>true));
+            gdao_display_field($lastName, 'Last Name', '');
+            $website = metadata($item,array('Item Type Metadata', 'Website'), array('all'=>true));
+            gdao_display_field($website, 'Website', '');
+        }
 
+        if ($source == 'Internet Archive') {
+	    $iaID = metadata($item,array('Dublin Core', 'Identifier')); ?>
+      <iframe src="http://archive.org/embed/<?php echo $iaID; ?>&playlist=1" 
+	      width="400" height="400" frameborder="0"></iframe> 
+<?php 
 
-	      if($itemtype == 'Copyright Clearance'):
-	      $firstName = metadata($item,array('Item Type Metadata', 'FirstName'), array('all'=>true)); 
-    gdao_display_field($firstName, 'First Name', ''); 
-    $lastName = metadata($item,array('Item Type Metadata', 'LastName'), array('all'=>true));
-    gdao_display_field($lastName, 'Last Name', '');
-    $website = metadata($item,array('Item Type Metadata', 'Website'), array('all'=>true));
-    gdao_display_field($website, 'Website', '');
-    endif; 
+	} elseif ($itemtype == 'Sound' && !empty($ark)) {
+	    fire_plugin_hook('public_avalon_video',array('height'=>'50'));		    
+        } elseif ($itemtype == 'Video' && !empty($ark)){
+            fire_plugin_hook('public_avalon_video',array());
+     	} elseif ($itemtype == 'Website') {
+	    $urls = metadata($item,array('Item Type Metadata', 'URL'), 
+			     array('all'=>true));
+	    gdao_display_field($urls, 'URL', '');
+	    $description = metadata($item,array('Dublin Core', 'Description'), array('all'=>true));
+	    gdao_display_field($description, 'Description', NULL); 
+            
+	} elseif ($itemtype == 'Story'){ ?>
+          <div class="oral-history">
+          <?php
+          $ohHow = metadata($item,array('Item Type Metadata', 'gdao-oh-how'));
+	  gdao_display_field($ohHow, 'How did you become a Deadhead?', NULL);
+	  $ohShow = metadata($item,array('Item Type Metadata', 'gdao-oh-show'));
+	  gdao_display_field($ohShow, 'What is your favorite Dead show, and why?', NULL);
+	  $ohSong = metadata($item,array('Item Type Metadata', 'gdao-oh-song'));
+	  gdao_display_field($ohSong, 'What is your favorite Dead song, and why?', NULL);
+	  $ohScene = metadata($item,array('Item Type Metadata', 'gdao-oh-scene'));
+	  gdao_display_field($ohScene, 'What is your favorite aspect of the Dead scene?', NULL);
+	  $ohPhenom = metadata($item,array('Item Type Metadata', 'gdao-oh-phenom'));
+	  gdao_display_field($ohPhenom, 'What, if anything, do you think is important about the Dead, and about the Dead phenomenon?', NULL);
+         
+          if ($item->fileCount()>0) { ?>
+            <div id="item-files" class="item-field">
+	      <h3><?php echo __('Files'); ?></h3>
+	      <div><?php echo $filesForItem; ?></div>
+            </div> <?php
+	  } ?>
+          </div><?php
 
-    if ($source == 'Internet Archive'):
-	       $iaID = metadata($item,array('Dublin Core', 'Identifier')); ?>
-    <iframe src="http://archive.org/embed/<?php echo $iaID; ?>&playlist=1" 
-	    width="400" height="400" frameborder="0"></iframe> <?php 
+	} elseif ($itemtype == 'Article' && empty($ark) && $item->fileCount()>0){  ?>
+          <div id="item-files" class="item-field">
+	    <h3><?php echo __('Files'); ?></h3>
+	    <div><?php echo $filesForItem; ?></div>
+          </div><?php
+	} elseif (!empty($ark)) {
+	        //	       echo metadata($item,array('Item Type Metadata', 'StructMap'));
+	        echo $filesForItem;
+        } elseif ($item->fileCount()>0){ 
+                ?>
+            <div id="item-files" class="item-field">
+	      <?php 
+              if ($itemtype == 'Video' || $itemtype == 'Audio'){ 
+              ?> <h3><?php echo __('Files'); ?></h3><?php 
+               } 
+               echo $filesForItem; ?>
+            </div><?php  
+        }
+      } elseif ($restricted == 'true' && !gdao_is_authorized()) { ?>
+            <div id="restricted-item" class="item-field">
+               <img src="/themes/gdao-theme/images/content-not-available.png"
+	       alt="Access is restricted to UCSC campus for copyright reasons"/>
+            </div>  <?php
+      } ?>
 
-							       elseif ($itemtype == 'Sound' && !empty($ark)): 
-			                                       fire_plugin_hook('public_avalon_video',array('height'=>'50'));		    /*										   $entryID = metadata($item,
-											                                                       array('Item Type Metadata', 'KalturaEntryID')); 
-										                                                               $uiConfID = metadata($item,
-											                                                       array('Item Type Metadata', 'KalturaUIConfID'));
-										                                                               $playerID = metadata($item,
-											                                                       array('Item Type Metadata', 'KalturaPlayerID'));
-										                                                               echo gdao_display_kaltura('8129212', $entryID, '30', '320');
-			                                                                                                                     */
-                                                               elseif ($itemtype == 'Video' && !empty($ark)):
-                                                               fire_plugin_hook('public_avalon_video',array());
-     		                                               /*										   $entryID = metadata($item,
-								  $entryID = metadata($item,
-								  array('Item Type Metadata', 'KalturaEntryID'));
-								  $uiConfID = metadata($item,
-								  array('Item Type Metadata', 'KalturaUIConfID'));
-								  $playerID = metadata($item,
-								  array('Item Type Metadata', 'KalturaPlayerID'));
-								  echo gdao_display_kaltura('8129222', $entryID, '400', '500');
-		                                                */
-							       elseif ($itemtype == 'Website'):
-							       $urls = metadata($item,array('Item Type Metadata', 'URL'), 
-										array('all'=>true));
-							       gdao_display_field($urls, 'URL', '');
-							       $description = metadata($item,array('Dublin Core', 'Description'), array('all'=>true));
-							       gdao_display_field($description, 'Description', NULL); 
-
-							       elseif ($itemtype == 'Story'): ?>
-    <div class="oral-history"><?php
-			      $ohHow = metadata($item,array('Item Type Metadata', 'gdao-oh-how'));
-			      gdao_display_field($ohHow, 'How did you become a Deadhead?', NULL);
-			      $ohShow = metadata($item,array('Item Type Metadata', 'gdao-oh-show'));
-			      gdao_display_field($ohShow, 'What is your favorite Dead show, and why?', NULL);
-			      $ohSong = metadata($item,array('Item Type Metadata', 'gdao-oh-song'));
-			      gdao_display_field($ohSong, 'What is your favorite Dead song, and why?', NULL);
-			      $ohScene = metadata($item,array('Item Type Metadata', 'gdao-oh-scene'));
-			      gdao_display_field($ohScene, 'What is your favorite aspect of the Dead scene?', NULL);
-			      $ohPhenom = metadata($item,array('Item Type Metadata', 'gdao-oh-phenom'));
-			      gdao_display_field($ohPhenom, 'What, if anything, do you think is important about the Dead, and about the Dead phenomenon?', NULL);
-                              if ($item->fileCount()>0): ?>
-      <div id="item-files" class="item-field">
-	<h3><?php echo __('Files'); ?></h3>
-	<div><?php echo $filesForItem; ?></div>
-      </div> <?php
-	     endif; 
-	     ?></div><?php
-
-		     elseif ($itemtype == 'Article' && empty($ark) && $item->fileCount()>0): 
-		     ?>
-      <div id="item-files" class="item-field">
-	<h3><?php echo __('Files'); ?></h3>
-	<div><?php echo $filesForItem; ?></div>
-      </div>
-
-	       <?php
-	       elseif (!empty($ark)): 
-	       //	       echo metadata($item,array('Item Type Metadata', 'StructMap'));
-	       echo $filesForItem;
-               elseif ($item->fileCount()>0): ?>
-      <div id="item-files" class="item-field">
-	<?php if ($itemtype == 'Video' || $itemtype == 'Audio'): ?>
-	  <h3><?php echo __('Files'); ?></h3>
-	<?php endif; ?>
-	<?php echo $filesForItem; ?>
-      </div>
-      <?php endif; ?>
-
-		<?php elseif ($restricted == 'true' && !gdao_is_authorized()): ?>
-      <div id="restricted-item" class="item-field">
-        <img src="/themes/gdao-theme/images/content-not-available.png"
-	     alt="Access is restricted to UCSC campus for copyright reasons"/>
-      </div>
-		<?php endif; ?>
-
-
-		<div class="item-fields">
-                  
-		  <?php $creators = metadata($item,array('Dublin Core', 'Creator'), array('all'=>true)); ?>
-		  <?php gdao_display_field($creators, 'Creator', '/solr-search/results/index?q=39_s:'); ?>
-
-		  <?php $dates = metadata($item,array('Dublin Core', 'Date'), array('all'=>true)); ?>
-		  <?php gdao_display_field($dates, 'Date', '/solr-search/results/index?q=40_s:'); ?>
-
-		  <?php $coverages = metadata($item,array('Dublin Core', 'Coverage'), array('all'=>true)); ?>
-		  <?php gdao_display_field($coverages, 'Related Show', '/solr-search/results/index?q=38_s:'); ?>
-
-		  <?php $subjects = metadata($item,array('Item Type Metadata', 'AllSubjects'), array('all'=>true)); ?>
-		  <?php gdao_display_field($subjects, 'Subject', '/solr-search/results/index?q=260_s:'); ?>
-
-		  <?php if ($itemtype != 'Website'): ?>
-		    <?php $urls = metadata($item,array('Item Type Metadata', 'URL'), array('all'=>true)); ?>
-		    <?php gdao_display_field($urls, 'URL', ''); ?>
-		  <?php endif; ?>
-
-		  <div id="item-citation" class="item-field citation">
-		    <h3>Citation:</h3>
-		    <p id="citation"><?php echo metadata($item, 'citation', array('no_escape' => true)); ?></p>
-		  </div>
-
-		  <!-- AddThis Button BEGIN -->
-		  <div class="addthis_toolbox addthis_default_style item-field social-links">
-		    <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-		    <a class="addthis_button_tweet"></a>
-		    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-		    <a class="addthis_counter addthis_pill_style"></a>
-		  </div>
-		  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fcd594c19cdb40c"></script>
-		  <!-- AddThis Button END -->
-
-		</div>
   </div>
+
   <!-- Below the fold -->
   <p class="more">Show Details</p>
   <div id="fields-secondary" class="hidden">
@@ -322,7 +312,7 @@ $curated = metadata($item,array('Item Type Metadata', 'Curated'));
       <?php echo fire_plugin_hook('public_items_show'); ?>
     </div>
   <?php endif; ?>
-
+ 
 </div><!-- End of Primary -->
 <?php
 
