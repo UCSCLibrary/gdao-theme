@@ -4,13 +4,10 @@
 		<div class="four-1">
 			<h3>GDAO</h3>
 			<a href="/"><img src="<?php echo absolute_url('/themes/gdao-theme/images/logo-gdao-gray.png')?>" /></a>
-			<?php echo nav(
-			    array( 
-				array('label'=>'Policies','uri' => url('/policies')),
-				array('label'=> 'Credits','uri' => url('/credits'))
-			    )
-			);
-			?>
+                        <ul>
+			  <li><a href="<?php echo url('/policies'); ?>">Policies</a></li>
+			  <li><a href="<?php echo url('/credits'); ?>">Credits</a></li>
+			</ul>
 		</div>
 		<div class="four-2">
 			<h3>UCSC</h3>
