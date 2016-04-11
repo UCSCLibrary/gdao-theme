@@ -890,7 +890,7 @@ body#items div#fields-primary .application-pdf {
     width:70%;
 }
 
-body#items div#images_wrapper, body#items div.iframe, body#items div.object, body#items div#primary div.url, body#items div#primary div.oral-history, body#items div#fields-primary div#item-files, body#items div#fields-primary div#restricted-item {
+body#items div#images_wrapper, body#items div.iframe, body#items div.object, body#items div#fields-primary>div.url, body#items div#primary div.oral-history, body#items div#fields-primary div#item-files, body#items div#fields-primary div#restricted-item {
     width: 640px;
     background-color: #f8f8f8;
     border: 1px solid #cbcbcb;	
@@ -960,7 +960,7 @@ body#items div#primary div.url {
     font-size: 14px;	
 }
 
-body#items div#primary div.url a, body#items div#primary div.item-file a.download-file {
+body#items div#fields-primary>div.url a, body#items div#primary div.item-file a.download-file {
     font-size: 18px;
     font-weight: bold;
 }
