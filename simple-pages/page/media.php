@@ -15,7 +15,8 @@
 
 	<h3><a href="/items/show/222785">Live at Rich Stadium on 1989-07-04</a></h3>
 	<iframe src="http://archive.org/embed/gd89-07-04.aud.wiley.9045.sbeok.shnf" width="250" height="30" frameborder="0"></iframe>
-	<p><a href="/solr-search/results/index?q=&solrfacet=itemtype:%22Fan%20Tape%22" class="more">View More Fan Tapes</a></p>
+	<p><a href="solr-search/results/index?q=%28*%29&facet=itemtype:%22Fan%20Tape%22" class="more">View More Fan Tapes</a></p>
+	
 </div>
 <?php
    if(plugin_is_active('avalonvideo')){  ?>
@@ -37,8 +38,7 @@
 <?php fire_plugin_hook('public_avalon_video',array('url'=>$url_base.'2857','width'=>$audio_width,'height'=>$audio_height)); ?>
 <h3><a href="/items/show/378051">Phil Lesh interview. Broadcast on WQED in Pittsburgh in 1990 [radio broadcast]</a></h3>
 <?php fire_plugin_hook('public_avalon_video',array('url'=>$url_base.'2893','width'=>$audio_width,'height'=>$audio_height)); ?>
-
-   <p><a href="/solr-search/results/index?q=&solrfacet=itemtype:%22Sound%22" class="more">View More Audio Recordings</a></p>
+   <p><a href='/solr-search/results/index?q=(*)&facet=itemtype:"Sound"' class="more">View More Audio Recordings</a></p>
 
 </div>
 
@@ -53,8 +53,8 @@
 
 	<h3><a href="/items/show/225570">Touch of Grey: music video produced in 1987 [excerpt]</a></h3>
 	<?php fire_plugin_hook('public_avalon_video',array('url'=>$url_base.'3346','width'=>$video_width,'height'=>$video_height)); ?>
-
-	<p><a href="/solr-search/results/index?q=&solrfacet=itemtype:%22Video%22" class="more">View More Videos</a></p>
+	<p><a href='/solr-search/results/index?q=(*)&facet=itemtype:"Video"' class="more">View More Videos</a></p>
+	
 </div>
 
 
