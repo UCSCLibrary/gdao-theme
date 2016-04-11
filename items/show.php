@@ -36,7 +36,6 @@ $curated = metadata($item,array('Item Type Metadata', 'Curated'));
 	      <?php gdao_display_field($subjects, 'Subject', '/solr-search/results/index?q=260_s:'); ?>
 
 	      <?php if ($item->getItemType()->name != 'Website') { ?>
-		<?php echo("<h1>Itemtype:".$item->getItemType()->name."</h1>")?>
 		<?php $urls = metadata($item,array('Item Type Metadata', 'URL'), array('all'=>true)); ?>
 		<?php gdao_display_field($urls, 'URL', ''); ?>
 	      <?php } ?>
