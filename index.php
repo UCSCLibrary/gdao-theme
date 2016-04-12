@@ -95,7 +95,7 @@
 				<p>No recent items available.</p>
 			<?php endif; ?>
 			<p class="view-items-link"><span id="whatsnew-title"><?php echo link_to_item($title); ?></span><span>
-				|<a href="/solr-search/results/index?sort=sortedCreateDate+desc" class="read-more" id="more-new">more recent items</a></span></p>
+				|<a href="/solr-search/results/index?sort=sortCreateDate+desc" class="read-more" id="more-new">more recent items</a></span></p>
 		</div>
 		<div class="three-2">
 			<h2>Upload Media</h2>
