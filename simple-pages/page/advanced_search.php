@@ -4,25 +4,25 @@
     <div class="as-field as-query">
       <select name="as-1">
         <option value="">Keyword</option>
-        <option value="c">Creator</option>
-        <option value="t">Title</option>
-        <option value="s">Subject</option>
+        <option value="39_s">Creator</option>
+        <option value="50_t">Title</option>
+        <option value="49_t">Subject</option>
       </select> for <input type="text" name="as-val-1" value="" />
     </div>
     <div class="as-field as-query">
       <select name="as-2">
         <option value="">Keyword</option>
-        <option value="c">Creator</option>
-        <option value="t">Title</option>
-        <option value="s">Subject</option>
+        <option value="39_s">Creator</option>
+        <option value="50_t">Title</option>
+        <option value="49_t">Subject</option>
       </select> for <input type="text" name="as-2-val" value="" />
     </div>
     <div class="as-field as-query">
       <select name="as-3">
         <option value="">Keyword</option>
-        <option value="c">Creator</option>
-        <option value="t">Title</option>
-        <option value="s">Subject</option>
+        <option value="39_s">Creator</option>
+        <option value="50_t">Title</option>
+        <option value="49_t">Subject</option>
       </select> for <input type="text" name="as-3-val" value="" />
     </div>
 <!--     
