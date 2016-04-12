@@ -20,7 +20,8 @@ jQuery(document).ready(function(){
       }
     });
 
-    $url = $url.substr(0, $url.length - 5);
+    if($url.indexOf("+AND+") > $url.length-7)
+      $url = $url.substr(0, $url.length - 5);
     $itemtype = jQuery('#item-type').val();
 
     if ($itemtype != '') {
