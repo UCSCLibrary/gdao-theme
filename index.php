@@ -26,7 +26,7 @@
 					<?php foreach (loop('items') as $item): 
 
 					$title = gdao_shorten_text(metadata($item,array('Dublin Core', 'Title')));
-//					$itemtype = metadata($item,'item type name'); 
+
 					$itemtype = $item->getItemType()->name;
 					$ark = metadata($item, array('Item Type Metadata', 'ARK')); ?>
 						
