@@ -45,7 +45,7 @@
 <div id="videorecs_browse" class="three-3">
 	<h2>Selected Video Recordings</h2>
 	<h3><a href="/items/show/225506">Not Too Old for Rock and Roll: a segment of the television program, 20/20, originally broadcast in 1980 [excerpt]</a></h3>
-	<?php fire_plugin_hook('public_avalon_video',array('url'=>$url_base.'3349','width'=>$video_width,'height'=>$video_height));	?>		 
+	<?php fire_plugin_hook('public_avalon_video',array('url'=>$url_base.'3350','width'=>$video_width,'height'=>$video_height));	?>		 
 
 <!--    <h3><a href="/items/show/225538">Grateful Dead Met Center show report: broadcast on KSTP-TV in April 1989 [excerpt]</a></h3>
          <?php fire_plugin_hook('public_avalon_video',array('url'=>$url_base.'3348','width'=>$video_width,'height'=>$video_height));	?>		 
