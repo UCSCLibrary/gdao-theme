@@ -1560,7 +1560,7 @@ ul.pagination_list li.pagination_current {
 .gdao_solr_result {
     border-bottom: 1px solid #cbcbcb;
     padding: 16px;
-    height: 1%; overflow: hidden; /* this is from: http://www.mikepadgett.com/technology/technical/alternative-to-the-pie-clearfix-hack/ */ 	
+    overflow: hidden; /* this is from: http://www.mikepadgett.com/technology/technical/alternative-to-the-pie-clearfix-hack/ */
 }
 
 #gdao_solr_results .odd {
