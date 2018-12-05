@@ -1,5 +1,6 @@
 <?php 
 
+
 $filesForItem =  files_for_item(array('imageSize'=>'fullsize',
                                       'linkToFile'=>false));
 
@@ -52,7 +53,7 @@ $curated = metadata($item,array('Item Type Metadata', 'Curated'));
 		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
 		<a class="addthis_counter addthis_pill_style"></a>
 	      </div>
-	      <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fcd594c19cdb40c"></script>
+	      <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fcd594c19cdb40c"></script>
 	      <!-- AddThis Button END -->
 
 	    </div>
@@ -76,14 +77,14 @@ $curated = metadata($item,array('Item Type Metadata', 'Curated'));
 
         if ($source == 'Internet Archive') {
 	    $iaID = metadata($item,array('Dublin Core', 'Identifier')); ?>
-      <iframe src="http://archive.org/embed/<?php echo $iaID; ?>&playlist=1" 
+      <iframe src="https://archive.org/embed/<?php echo $iaID; ?>&playlist=1" 
 	      width="400" height="400" frameborder="0"></iframe> 
 <?php 
 
 	} elseif ($itemtype == 'Sound' && !empty($ark)) {
-	    fire_plugin_hook('public_avalon_video',array('height'=>'50'));		    
+	    fire_plugin_hook('hydra_hls_embed',array('height'=>'50'));		    
         } elseif ($itemtype == 'Video' && !empty($ark)){
-            fire_plugin_hook('public_avalon_video',array());
+            fire_plugin_hook('hydra_hls_embed',array());
      	} elseif ($itemtype == 'Website') {
 	    $urls = metadata($item,array('Item Type Metadata', 'URL'), 
 			     array('all'=>true));
