@@ -1,21 +1,23 @@
 <?php
+$letter = isset($_GET['letter']) ? $_GET['letter'] :  chr(rand(97,122));
 $offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
-
-
-$result = gdao_get_fanart($offset);
+$uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH)."?letter={$letter}&offset=";
+$result = gdao_get_fanart();
 $i=0;
 ?>
 <script>
- var carousel_offset = <?php echo $offset; ?>
+ var carousel_offset = <?php echo isset($_GET['offset']) ? $_GET['offset'] : 0; ?>
 </script>
 <div id="fancarousel">
-	<a class="next"></a>
-	<a class="prev"></a>
-	<ul>
+	<a class="next" href="<?php echo $uri . ($offset + 6) ?>"></a>
+        <a class="prev" href="<?php echo $uri . (($offset < 6) ? 0 : $offset - 6) ?>"></a>
 
+	<ul>
 		<?php 
-		foreach ($result['response']['docs'] as $index => $values)
-			echo gdao_get_fanart_image($values);
+		foreach ($result['response']['docs'] as $index => $values){
+		        $record = get_record_by_id('Item',$values['modelid']);	
+			echo gdao_get_fanart_image($values, $record);
+		}	
 		?>
 		
 	</ul>
