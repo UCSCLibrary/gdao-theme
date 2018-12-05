@@ -41,8 +41,6 @@
 		<?php //page conditional scripts
 		if(strpos($_SERVER['REQUEST_URI'],'fan-art')) {
 			queue_css_file('carousel');
-			queue_js_file('gdao-carousel');
-			
 		}else if(strpos($_SERVER['REQUEST_URI'],'milestones')) {
 			queue_js_file('neatline-customizations'); 
 			queue_css_file('timeline');
@@ -118,7 +116,8 @@
 					  array('label'=>'Milestones','uri' => url('milestones')),
 					  array('label'=>'Artists','uri' => url('artists')),
 					  array('label'=>'Media','uri' => url('media')),
-					  array('label'=>'Fan Art','uri' => url('fan-art'))),'nav-collection');
+					  array('label'=>'Fan Art','uri' => url('fan-art'))
+					),'nav-collection');
                                   $nav->setUlId('nav-collection');
                                   echo $nav;
 				  ?>
