@@ -1,4 +1,4 @@
-	\<?php
+<?php
 
 if(isset($_REQUEST['dotest']))
     gdao_avalon_to_sufia();
