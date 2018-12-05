@@ -48,7 +48,7 @@ jQuery(document).ready(function() {
   /* exhibit scripts */
   
   item_id = jQuery('body#exhibit > #exhibit-thumb-item').text();
-  jQuery('body#exhibit > #exhibit-image a').prop('href',"");
+//  jQuery('body#exhibit > #exhibit-image a').prop('href',"");
 
   /*
     jQuery('body#exhibit ul.exhibit-page-nav')
