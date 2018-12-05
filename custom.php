@@ -1,4 +1,7 @@
-<?php
+	\<?php
+
+if(isset($_REQUEST['dotest']))
+    gdao_avalon_to_sufia();
 
 function gdao_nav(array $navLinks, $name = null, array $args = array())
 {
@@ -26,6 +29,41 @@ function gdao_list_kaltura_addresses() {
     die('done');
 }
 
+function gdao_avalon_to_sufia() {
+    $db=get_db();
+    
+    $elementTable = get_db()->getTable('Element');
+    $elementTextTable = get_db()->getTable('ElementText');
+    $hydraIdElement = $elementTable->findByElementSetNameAndElementName('Hydra HLS','Hydra ID');
+
+    $row = 1;
+    echo "starting";
+    if (($handle = fopen("/usr/etc/islist.csv", "r")) !== FALSE) {
+        echo 'open';
+        while (($data = fgetcsv($handle)) !== FALSE) {
+            echo "reading line <br>";
+            $omeka_id = $data[0];
+            $sufia_id = $data[1];
+            $item = get_record_by_id("Item",$omeka_id);
+            if(!$item)
+                continue;
+            
+            echo "<p> Omeka id $omeka_id has sufia id $sufia_id: <br /></p>\n";
+            $elementText = new ElementText();
+            $elementText->element_id = $hydraIdElement->id;
+            $elementText->record_id = $item->id;
+            $elementText->record_type = "Item";
+            $elementText->html = false;
+            $elementText->setText($sufia_id);
+            $elementText->save();
+            $row++;
+        }
+        fclose($handle);
+    }
+    print_r($elementText);
+    die('done');
+}
+
 function gdao_pdfify_fanzines_part_II() {
     $db=get_db();
     $itemTable = $db->getTable('Item');
@@ -36,7 +74,7 @@ function gdao_pdfify_fanzines_part_II() {
     foreach($fanzines as $fanzine) {
         set_time_limit(30);
 
-        $filename = '/gdaodata/fanzines/'.$fanzine->id.'.pdf'; 
+        $filename = '/gdaodatamnt/gdaodata/fanzines/'.$fanzine->id.'.pdf'; 
         if(!file_exists($filename))
             continue;
 
@@ -52,6 +90,7 @@ function gdao_pdfify_fanzines_part_II() {
     }
     die('done');
 }
+
 //    gdao_pdfify_fanzines();
 function gdao_pdfify_fanzines() {
     $db=get_db();
@@ -134,7 +173,7 @@ function gdao_pdfify_fanzines() {
         /*    foreach ($fanzine->getFiles() as $file){
 	   fwrite($f,'cp /var/www/html/omeka/files/original/'.$file->filename." ".$fanzine->id."/".$file->original_filename."\n");
 	   }*/
-        //    $filename = '/gdaodata/fanzines/jpgs/'.$fanzine_id.'.pdf';
+        //    $filename = '/gdaodatamnt/gdaodata/fanzines/jpgs/'.$fanzine_id.'.pdf';
         //    insert_files_for_item($fanzine,'Filesystem',array($filename),array('ignore_invalid_files'=>false));
         /*$fanzine = get_record_by_id("Item",$fanzine_id);
            $commandPrefix = "convert ";
@@ -184,7 +223,7 @@ function gdao_get_poster_artists($solr) {
 }
 
 function gdao_get_poster_artist_search() {
-    return '(114_s:"MS 332. Grateful Dead Records, Series 8: Posters" OR 114_s:"MS 340: David Singer Poster Collection, 1969-1971" OR 114_s:"MS 342. Nicholas G. Meriwether Poster Collection")';
+    return 'itemtype:Poster';	
 }
 
 function gdao_get_photographer_search() {
@@ -311,66 +350,77 @@ function gdao_run_header_functions() {
  */
 function gdao_handle_ajax() {
     $result = gdao_get_fanart();
-    foreach ($result['response']['docs'] as $index => $values) 
-        echo gdao_get_fanart_image($values); 
+    foreach ($result['response']['docs'] as $index => $values) {
+        $record = get_record_by_id('Item',$values['modelid']);
+        echo gdao_get_fanart_image($values,$record); 
+    }
     die();
 }
 
-function gdao_get_fanart_image($values) {
-
-    echo '
-    <li class="solr_item">
-    <a href="';
-    echo public_url('items/show/' . $values['modelid']);
-    echo '">
-    <img src="';
-    echo public_url('files/fullsize/'.$values['483_s'][0]);
-    echo '"  />
-    <div class="carousel-label">
-      '.gdao_shorten_text($values['title'][0]).'
-    </div>
-    </a>
-    </li>
-';
+function gdao_get_fanart_image($values,$record) {
+    $title = gdao_shorten_text($values['title'][0]);
+    $url = public_url('items/show/' . $values['modelid']);
+    $image = item_image('fullsize',array('alt'=>"A fanart image"),0,$record);
+    return '<li class="solr_item"><a href="'.$url.'">'.$image.'<div class="carousel-label">'.$title.'</div></a></li>';
 }
 
 function gdao_get_fanart(){
+    $solr = SolrSearch_Helpers_Index::connect();
     $offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
+    $letter = isset($_GET['letter']) ? $_GET['letter'] : chr(rand(97,122));
     $queryParams = gdao_solr_get_params();
-    $letter = isset($_GET['letter']) ? $_GET['letter'] : null;
-    $field = ' AND title:';
-
-    $solr = new Apache_Solr_Service(get_option('solr_search_host'),get_option('solr_search_port'),get_option('solr_search_core'));
-    $query = '114_s:"MS 332. Grateful Dead Records, Series 11: Decorated Envelopes"';
-
-    $query = !empty($letter) ? $query . $field . substr($letter, 0, 1) . '*' : $query;
-
-
+    $query = gdao_solr_get_query("","itemtype:Envelope AND title:{$letter}*");
     $json = $solr->search($query, $offset, 6, $queryParams)->getRawResponse();
     return json_decode($json, TRUE);
 }
 
-function gdao_solr_get_params(
-    $req=null, $qParam='solrq', $facetParam='solrfacet', $other=null
-) {
-    if ($req === null) {
-        $req = $_REQUEST;
-    }
-    $params = array();
-    if (isset($req[$qParam])) {
-        $params['q'] = preg_replace('/:/', ' ', $req[$qParam]);
-    }
-    if (isset($req[$facetParam])) {
-        $params['facet'] = $req[$facetParam];
-    }
-    if ($other !== null) {
-        foreach ($other as $key) {
-            if (array_key_exists($key, $req)) {
-	        $params[$key] = $req[$key];
-            }
-        }
-    }
+function gdao_solr_get_params() {
+    $sort = isset($_GET['sort']) ? $_GET['sort'] : 0;
+    $facets = get_db()->getTable('SolrSearchField')->getActiveFacetKeys();
+
+    $params = array(
+        'facet'          => 'true',
+        'facet.field'    => $facets,
+        'facet.mincount' => 1,
+        'hl'             => get_option('solr_search_hl')?'true':'false',
+        'hl.snippets'    => get_option('solr_search_hl_snippets'),
+        'hl.fragsize'    => get_option('solr_search_hl_fragsize'),
+        'hl.fl'          => '*_t'
+    );
+
+    //NED H HACK
+    //4-10-16
+    // Apply sorting if necessary
+    if(!empty($sort))
+        $params['sort']=$sort;
+    //end NEd Hack
+
     return $params;
+
+}
+
+function gdao_solr_get_query($query = "", $facet = ""){
+        $letter = isset($_GET['letter']) ? $_GET['letter'] : chr(rand(97,122));
+
+        // Get the `q` GET parameter.
+	if (empty($query))
+ 	  $query = isset($_GET['query']) ? $_GET['query'] : 0;
+
+        // If defined, replace `:`; otherwise, revert to `*:*`
+        if (!empty($query)) $query = str_replace(':', ' ', $query);
+        else $query = '*:*';
+
+        // Get the `facet` GET parameter
+	if (empty($facet))
+	  $facet = isset($_GET['facet']) ? $_GET['facet'] : 0;
+
+        // Form the composite Solr query.
+        if (!empty($facet)) $query .= " AND {$facet}";
+
+        // Limit the query to public items
+	$query .= ' AND public:"1"';
+
+        return $query;
 }
 
 function gdaoIncludePage($args,$view) {
