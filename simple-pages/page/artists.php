@@ -1,6 +1,7 @@
 <?php $solr = new Apache_Solr_Service(get_option('solr_search_host'),get_option('solr_search_port'),get_option('solr_search_core')); ?>
 <?php $xml = simplexml_load_string(file_get_contents(dirname(dirname(dirname(__FILE__))).'/meta/artists.xml'));?>
 <?php $result = gdao_get_photographers($solr);?>
+
 <div id="photographers" class="two-1">
 	<h2>Photographers</h2>
 
@@ -33,11 +34,6 @@
 		</div>
 	<?php endforeach; ?>
 	
-	<p class="browse-more">
-		<a href="/solr-search/results/index?q=<?php echo urlencode(gdao_get_photographer_search());?>" class="more">
-			View More Photographers
-		</a>
-	</p>
 </div>
 
 <?php $result = gdao_get_poster_artists($solr); ?>
