@@ -120,7 +120,7 @@ echo head(array('title' => $pageTitle, 'id' => 'items', 'bodyclass' => 'search-r
 		<?php elseif (is_a($record,'Item') && metadata($record,'has_files')): ?>
                 <?php /* foreach(loop($files) as $file):*/ ?>
 	                	<div class="thumbnail_image">
-                                  <?php echo link_to_item(item_image('square_thumbnail')); ?>
+                                  <?php echo link_to_item(item_image('thumbnail')); ?>
         		</div>
 		<?php /* endforeach;*/ ?>
 
