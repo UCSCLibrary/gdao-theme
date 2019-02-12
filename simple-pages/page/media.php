@@ -47,10 +47,6 @@
 	<h3><a href="/items/show/225506">Not Too Old for Rock and Roll: a segment of the television program, 20/20, originally broadcast in 1980 [excerpt]</a></h3>
 <?php fire_plugin_hook('hydra_hls_embed',array('hydra_id'=>'ht24wj427','width'=>$video_width,'height'=>$video_height)); ?>
 
-<!--    <h3><a href="/items/show/225538">Grateful Dead Met Center show report: broadcast on KSTP-TV in April 1989 [excerpt]</a></h3>
-         <?php fire_plugin_hook('public_avalon_video',array('url'=>$url_base.'3348','width'=>$video_width,'height'=>$video_height));	?>		 
--->
-
 	<h3><a href="/items/show/225570">Touch of Grey: music video produced in 1987 [excerpt]</a></h3>
 <?php fire_plugin_hook('hydra_hls_embed',array('hydra_id'=>'6969z080f','width'=>$video_width,'height'=>$video_height)); ?>
 	<p><a href='/solr-search/results/index?q=(*)&facet=itemtype:"Video"' class="more">View More Videos</a></p>
