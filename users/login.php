@@ -43,10 +43,8 @@ echo head(
         <input type="submit" value="Log In" id="submit" name="submit">
       </div>
     </form>
-</div>
 
-<div>
-  <p><a href="/users/forgot-password">Forgot your password?</a></p>
+    <p><a href="/users/forgot-password">Forgot your password?</a></p>
 </div>
 
 <?php
