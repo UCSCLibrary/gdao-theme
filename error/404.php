@@ -4,10 +4,10 @@
   <h1>Page Not Found</h1>
   <p>The page you're looking for was not found. For help, you can:</p>
   <ul class="list">
-    <li>Visit the GDAO <a href="/faq">FAQ</a></li>
+    <li>Visit the GDAO <a href="/help">Help</a> page</li>
     <!--<li>Perform a site search using the search form in the footer</li>-->
     <li>Search the collection using the search form in the header</li>
-    <li>Contact us at <a href="mailto:grateful@ucsc.edu">grateful.ucsc.edu</a></li>
+    <li>Contact us at <a href="mailto:grateful@ucsc.edu">grateful@ucsc.edu</a></li>
   </ul>
 </div>
 <?php echo foot(); ?>
