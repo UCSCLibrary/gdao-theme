@@ -45,6 +45,10 @@ echo head(
     </form>
 </div>
 
+<div>
+  <p><a href="/users/forgot-password">Forgot your password?</a></p>
+</div>
+
 <?php
 echo foot(); 
 ?>
